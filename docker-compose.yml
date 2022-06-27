@@ -1,24 +1,39 @@
 version: "3.8"
 services:
+  bot:
+    build: .
+    container_name: birthy_bot
+    restart: "always"
+    environment:
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    networks:
+      database_network:
+        aliases:
+          - bot
+        ipv4_address: "156.0.0.10"
   database:
     user: root
     image: postgres:14.1-alpine
     container_name: birthy_database
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     volumes:
-      - ./database/:/var/lib/postgresql/data
+      - ./volume/database/:/var/lib/postgresql/data
     networks:
       database_network:
         aliases:
           - database
-        ipv4_address: "155.0.0.8"
+        ipv4_address: "156.0.0.11"
   pgadmin:
     user: root
     image: dpage/pgadmin4
@@ -32,19 +47,18 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ./pgadmin/:/var/lib/pgadmin
+      - ./volume/pgadmin/:/var/lib/pgadmin
     networks:
       database_network:
         aliases:
           - pgadmin
-        ipv4_address: "155.0.0.9"
+        ipv4_address: "156.0.0.12"
 
 volumes:
   database:
   pgadmin:
-
 networks:
   database_network:
     ipam:
       config:
-        - subnet: 155.0.0.0/24
+        - subnet: 156.0.0.0/24

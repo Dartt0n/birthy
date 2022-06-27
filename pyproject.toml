@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "birthy"
+version = "0.1.0"
+description = ""
+authors = ["Anton Kudryavtsev <antonkudryavtsevdoem@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiogram = "^2.21"
+pydantic = "^1.9.1"
+pendulum = "^2.1.2"
+loguru = "^0.6.0"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.19.1"}
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
