@@ -4,17 +4,19 @@ from typing import List, Tuple
 
 @lru_cache
 def start_registered():
-    return "start_registered"
+    return "Hi!\n*text*\n/help - view help message"
 
 
 @lru_cache
 def start_unregistered():
-    return "start_unregistered"
+    return (
+        "Hi!\n*text*\n/group - register group chat in system\n/help - view help message"
+    )
 
 
 @lru_cache
 def help_message():
-    return "help_message"
+    return "\n/start - start\n/help - help\n/group - register group\n/me $dd.mm.yyyy - register user\n/get_timezones - get info about timezones\n/set_timezone $name - set timezone to current group settings\n/nearest - view top 10 nearest birthdays\n/set_remind_interval $N - remind about birthday in N days\nget $name - view birthday date for name\n/change $dd.mm.yyyy - change birthday date"
 
 
 @lru_cache
