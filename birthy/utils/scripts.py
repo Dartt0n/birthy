@@ -111,5 +111,5 @@ def happy_birthday(person):
     return f"Happy Birthday, {person.name}"
 
 
-def birthday_in_days(person):
-    return f"{person.name}'s birthday is in {person.days_before_birthday()} days"
+def birthday_in_days(person, days):
+    return f"{person.name}'s birthday is in {days} days"

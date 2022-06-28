@@ -61,7 +61,10 @@ async def check_all_birthdays():
         for person in group.persons:
             if await person.days_before_birthday() <= group.remind_interval:
                 await bot.send_message(
-                    group.telegram_id, scripts.birthday_in_days(person)
+                    group.telegram_id,
+                    scripts.birthday_in_days(
+                        person, await person.days_before_birthday()
+                    ),
                 )
             if person.birth_date.replace(year=now.year) == now:
                 await bot.send_message(
