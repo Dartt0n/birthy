@@ -1,9 +1,7 @@
 from aiogram import types
 from bot.bot import dp
 from database.models import Group, Person
-from datetime import datetime
 from utils import scripts, validators, parser
-import pytz
 
 
 @dp.message_handler(commands=["start"])
@@ -58,6 +56,7 @@ async def register_user(message: types.Message):
         group=group,
     )
     await message.reply(scripts.user_successfully_registered())
+    await validators.check_birthday(message)
 
 
 @dp.message_handler(commands="get_timezones")
@@ -98,15 +97,56 @@ async def get_nearest_users(message: types.Message):
 
 @dp.message_handler(commands=["set_remind_interval"])
 @validators.transaction
-@validators.group_required
+@validators.registered_group_required
 async def set_remind_interval(message: types.Message):
     """This handler updates remind interval in database"""
-    pass
+    interval = parser.extract_interval(message.text)
+    if interval is None:
+        await message.reply(scripts.wrong_format_interval())
+        return
+
+    await Group.filter(telegram_id=message.chat.id).update(remind_interval=interval)
+    await message.reply(scripts.successfully_changed_interval())
+    await validators.check_all_birthdays()
 
 
 @dp.message_handler(commands=["get"])
 @validators.transaction
-@validators.group_required
+@validators.registered_group_required
 async def get_users_birthday(message: types.Message):
     """This handler sends info about user's birthday"""
-    pass
+    username = parser.extract_username(message.text)
+    if not username:
+        await message.reply(scripts.wrong_format_username())
+        return
+
+    person = (
+        await Person.filter(name=username)
+        .filter(group__telegram_id=message.chat.id)
+        .get_or_none()
+    )
+    if person is None:
+        await message.reply(scripts.not_existing_user())
+    else:
+        await message.reply(scripts.get_users_birthday(person))
+
+
+@dp.message_handler(commands=["change"])
+@validators.transaction
+@validators.registered_group_required
+async def change_user(message: types.Message):
+    """This handler updates user and it's birth date to database"""
+    telegram_id = message.from_user.id
+    if not await validators.is_registered_user(telegram_id):
+        await message.reply(scripts.user_unregistered())
+        return
+    birthday_date = parser.extract_birth_date(message.text)
+    if birthday_date is None:
+        await message.reply(scripts.wrong_format_date())
+        return
+
+    await Person.filter(telegram_id=message.from_user.id).update(
+        birth_date=birthday_date
+    )
+    await message.reply(scripts.user_successfully_updated())
+    await validators.check_birthday(message)

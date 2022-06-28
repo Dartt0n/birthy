@@ -19,7 +19,8 @@ class Group(Model):
 class Person(Model):
     """class representing a telegram user"""
 
-    telegram_id = db.IntField(pk=True)
+    id = db.IntField(pk=True)
+    telegram_id = db.IntField()
     name = db.CharField(255)
     birth_date = db.DateField()
     group = db.ForeignKeyField("models.Group", related_name="persons")

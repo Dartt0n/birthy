@@ -1,6 +1,9 @@
+import dbm
 from aiogram import executor
 from bot.bot import dp
 from config import config
+import asyncio
+from utils import validators
 
 # join handlers
 from handlers.commands import *
@@ -15,6 +18,16 @@ async def init():
     await Tortoise.generate_schemas()
 
 
+async def monitor():
+    while True:
+        await validators.check_all_birthdays()
+        await asyncio.sleep(60 * 60 * 24)  # 24 hours
+
+
+async def create_monitor_task(dp):
+    asyncio.create_task(monitor())
+
+
 if __name__ == "__main__":
     run_async(init())
-    executor.start_polling(dp)
+    executor.start_polling(dp, on_startup=create_monitor_task)

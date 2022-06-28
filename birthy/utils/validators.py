@@ -1,6 +1,9 @@
 from database.models import Group, Person
 from tortoise.transactions import in_transaction
+from bot.bot import bot
 from utils import scripts
+from aiogram import types
+from datetime import date
 
 
 def is_group(telegram_id: int):
@@ -48,3 +51,30 @@ def transaction(func):
             return await func(*args, **kwargs)
 
     return wrapper
+
+
+async def check_all_birthdays():
+    now = date.today()
+    groups = await Group.all()
+    for group in groups:
+        await group.fetch_related("persons")
+        for person in group.persons:
+            if await person.days_before_birthday() <= group.remind_interval:
+                await bot.send_message(
+                    group.telegram_id, scripts.birthday_in_days(person)
+                )
+            if person.birth_date.replace(year=now.year) == now:
+                await bot.send_message(
+                    group.telegram_id, scripts.happy_birthday(person)
+                )
+
+
+async def check_birthday(message: types.Message):
+    person = (
+        await Person.filter(telegram_id=message.from_user.id)
+        .filter(group__telegram_id=message.chat.id)
+        .get()
+    )
+    now = date.today()
+    if person.birth_date.replace(year=now.year) == now:
+        await message.answer(scripts.happy_birthday(person))

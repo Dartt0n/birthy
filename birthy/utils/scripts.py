@@ -69,3 +69,45 @@ def top_nearest_users(users: List[Tuple[str, int]]):
             for index, (name, days) in enumerate(users)
         ]
     )
+
+
+@lru_cache
+def wrong_format_interval():
+    return "wrong_format_interval"
+
+
+@lru_cache
+def successfully_changed_interval():
+    return "successfully_changed_interval"
+
+
+@lru_cache
+def wrong_format_username():
+    return "wrong_format_username"
+
+
+@lru_cache
+def not_existing_user():
+    return "not_existing_user"
+
+
+def get_users_birthday(person):
+    return f"{person.name}'s birthday is {person.birth_date.strftime('%-d %B, %Y')}"
+
+
+@lru_cache
+def user_unregistered():
+    return "user_unregistered"
+
+
+@lru_cache
+def user_successfully_updated():
+    return "user_successfully_updated"
+
+
+def happy_birthday(person):
+    return f"Happy Birthday, {person.name}"
+
+
+def birthday_in_days(person):
+    return f"{person.name}'s birthday is in {person.days_before_birthday()} days"

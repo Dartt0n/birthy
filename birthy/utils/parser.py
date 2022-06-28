@@ -1,10 +1,10 @@
 from datetime import date, datetime
 import re
-from loguru import logger
 import pytz
 
 birth_date_re = re.compile(r"(?:0[1-9]|[12]\d|3[01])\.(?:0[1-9]|1[012])\.(?:19|20)\d\d")
 timezone_re = re.compile(r"\w+\/\w+")  # TODO: Add one word timezones like `UTC`
+interval_re = re.compile(r" \d+")
 
 
 def extract_birth_date(text: str) -> date | None:
@@ -15,7 +15,6 @@ def extract_birth_date(text: str) -> date | None:
     try:
         date = datetime.strptime(match.group(), "%d.%m.%Y").date()
     except ValueError as e:
-        logger.error(e)
         return None
     else:
         return date
@@ -29,8 +28,26 @@ def extract_timezone(text: str) -> str | None:
     try:
         timezone = pytz.timezone(match.group())
     except pytz.UnknownTimeZoneError as e:
-        logger.error(e)
-        logger.error(match.group())
         return None
     else:
         return timezone.zone
+
+
+def extract_interval(text: str) -> int | None:
+    match = interval_re.search(text)
+    if match is None:
+        return None
+
+    try:
+        interval = int(match.group())
+    except ValueError:
+        return None
+    else:
+        return interval
+
+
+def extract_username(text: str) -> str | None:
+    words = text.split()
+    if len(words) != 2:
+        return None
+    return words[1]
