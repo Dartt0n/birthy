@@ -21,3 +21,7 @@ class Config(BaseSettings):
 @lru_cache
 def get_config():
     return Config()  # type: ignore # load from .env file
+
+
+# export variable
+config = get_config()

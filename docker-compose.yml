@@ -10,6 +10,8 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=${DATABASE_HOST}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    depends_on:
+      - database
     networks:
       database_network:
         aliases:
