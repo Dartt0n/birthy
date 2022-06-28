@@ -10,6 +10,7 @@ aiogram = "^2.21"
 pydantic = "^1.9.1"
 loguru = "^0.6.0"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.19.1"}
+pytz = "^2022.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

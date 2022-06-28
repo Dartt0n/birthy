@@ -33,7 +33,7 @@ def registered_group_required(func):
             await message.reply(scripts.help_message())
             return
 
-        if not is_registered_group(telegram_id):
+        if not await is_registered_group(telegram_id):
             await message.reply(scripts.group_unregistered())
             return
 
