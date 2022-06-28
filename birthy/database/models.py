@@ -9,7 +9,7 @@ from tortoise.models import Model
 class Group(Model):
     """class representing a telegram group"""
 
-    telegram_id = db.IntField(pk=True)
+    telegram_id = db.BigIntField(pk=True)
     timezone = db.CharField(50)
     remind_interval = db.IntField()
 
@@ -19,7 +19,7 @@ class Group(Model):
 class Person(Model):
     """class representing a telegram user"""
 
-    id = db.IntField(pk=True)
+    id = db.BigIntField(pk=True)
     telegram_id = db.IntField()
     name = db.CharField(255)
     birth_date = db.DateField()
