@@ -4,19 +4,36 @@ from typing import List, Tuple
 
 @lru_cache
 def start_registered():
-    return "Hi!\n*text*\n/help - view help message"
+    return """Hi!
+I'm Birhy 🎉!
+I help everyone remember their friends' birthdays.
+You can also see the list of available commands with /help.
+"""
 
 
 @lru_cache
 def start_unregistered():
-    return (
-        "Hi!\n*text*\n/group - register group chat in system\n/help - view help message"
-    )
+    return """Hi!
+I'm Birhy 🎉!
+I help everyone remember their friends' birthdays.
+Add me to a chat with your friends and register via /group command!
+You can also see the list of available commands with /help.
+"""
 
 
 @lru_cache
 def help_message():
-    return "\n/start - start\n/help - help\n/group - register group\n/me $dd.mm.yyyy - register user\n/get_timezones - get info about timezones\n/set_timezone $name - set timezone to current group settings\n/nearest - view top 10 nearest birthdays\n/set_remind_interval $N - remind about birthday in N days\nget $name - view birthday date for name\n/change $dd.mm.yyyy - change birthday date"
+    return """Here is a little help for using me in your chats:
+• /start - sends a greeting message from me
+• /help - shows this message
+• /group - saves your chat room
+• /me {date} - saves your birthday (please, type your birthday date in `dd.mm.yyyy` format)
+• /change {date} - allows you to change your birthday date 
+• /set_timezone {timezone} - specify your timezone
+• /get_timezones - view available timezones and their names
+• /nearest - shows top 10 nearest birthdays
+• /set_remind_interval $N - sets a reminder about a birthday N days prior (default: 7)
+"""
 
 
 @lru_cache
