@@ -1,5 +1,7 @@
 from __future__ import annotations  # better typing
+
 from datetime import datetime
+
 from tortoise import fields as db
 from tortoise.models import Model
 

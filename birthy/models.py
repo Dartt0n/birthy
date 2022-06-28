@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from datetime import datetime
+
+from loguru import logger
 from tortoise import fields
 from tortoise.models import Model
-from loguru import logger
 
 
 class Group(Model):

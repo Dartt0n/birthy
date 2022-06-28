@@ -1,10 +1,10 @@
 from aiogram import executor
 from bot.bot import dp
-from tortoise import Tortoise, run_async  # type: ignore
 from config import config
 
 # join handlers
 from handlers.commands import *
+from tortoise import Tortoise, run_async  # type: ignore
 
 
 async def init():

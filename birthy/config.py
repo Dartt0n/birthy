@@ -1,5 +1,7 @@
-from functools import lru_cache, cached_property
+from functools import cached_property, lru_cache
+
 from pydantic import BaseSettings
+
 
 # BaseSettings class from pydantic provides convenient way to handle environment variables
 class Config(BaseSettings):

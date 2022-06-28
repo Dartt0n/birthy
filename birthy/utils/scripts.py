@@ -1,5 +1,5 @@
-from functools import lru_cache
 import re
+from functools import lru_cache
 
 
 @lru_cache

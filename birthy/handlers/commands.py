@@ -1,7 +1,7 @@
-from bot.bot import dp
 from aiogram import types
-from utils import scripts, validators
+from bot.bot import dp
 from database.models import Group, Person
+from utils import scripts, validators
 
 
 @dp.message_handler(commands=["start"])
