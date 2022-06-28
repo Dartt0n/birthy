@@ -2,7 +2,6 @@ from bot.bot import dp
 from aiogram import types
 from utils import scripts, validators
 from database.models import Group, Person
-from loguru import logger
 
 
 @dp.message_handler(commands=["start"])
@@ -10,7 +9,6 @@ from loguru import logger
 @validators.group_required
 async def start_message(message: types.Message):
     """This handler is responsible for the behavior of the bot on /start command"""
-    logger.info("Start message")
     telegram_id = message.chat.id
     if await validators.is_registered_group(telegram_id):
         await message.reply(scripts.start_registered())
@@ -39,10 +37,22 @@ async def register_group(message: types.Message):
 
 @dp.message_handler(commands=["me"])
 @validators.transaction
-@validators.group_required
+@validators.registered_group_required
 async def register_user(message: types.Message):
     """This handler saves user and it's birth date to database if it wasn't saved"""
-    pass
+    telegram_id = message.from_user.id
+    if await validators.is_registered_user(telegram_id):
+        await message.reply(scripts.user_already_registered())
+        return
+
+    group = await Group.filter(telegram_id=message.chat.id).first()
+
+    await Person.create(
+        telegram_id=telegram_id,
+        name=message.from_user.username,
+        birth_date=None,  # TODO: parse birth date from message.text
+        group=group,
+    )
 
 
 @dp.message_handler(commands="get_timezones")
@@ -50,7 +60,7 @@ async def register_user(message: types.Message):
 @validators.group_required
 async def get_available_timezones(message: types.Message):
     """This handler sends a list of available timezones"""
-    pass
+    await message.reply(scripts.all_timezones())
 
 
 @dp.message_handler(commands=["set_timezone"])

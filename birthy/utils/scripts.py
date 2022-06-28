@@ -30,3 +30,13 @@ def group_successfully_registered():
 @lru_cache
 def user_already_registered():
     return "user_already_registered"
+
+
+@lru_cache
+def group_unregistered():
+    return "group_unregistered"
+
+
+@lru_cache
+def all_timezones():
+    return "all_timezones"

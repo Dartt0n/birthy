@@ -1,7 +1,6 @@
-from database.models import Group
+from database.models import Group, Person
 from tortoise.transactions import in_transaction
 from utils import scripts
-from loguru import logger
 
 
 def is_group(telegram_id: int):
@@ -12,9 +11,11 @@ async def is_registered_group(telegram_id: int):
     return await Group.filter(telegram_id=telegram_id).exists()
 
 
-def group_required(func):
-    logger.info("group_required")
+async def is_registered_user(telegram_id: int):
+    return await Person.filter(telegram_id=telegram_id).exists()
 
+
+def group_required(func):
     async def wrapper(message, *args, **kwargs):
         telegram_id = message.chat.id
         if not is_group(telegram_id):
@@ -25,9 +26,23 @@ def group_required(func):
     return wrapper
 
 
-def transaction(func):
-    logger.info("transaction")
+def registered_group_required(func):
+    async def wrapper(message, *args, **kwargs):
+        telegram_id = message.chat.id
+        if not is_group(telegram_id):
+            await message.reply(scripts.help_message())
+            return
 
+        if not is_registered_group(telegram_id):
+            await message.reply(scripts.group_unregistered())
+            return
+
+        await func(message)
+
+    return wrapper
+
+
+def transaction(func):
     async def wrapper(*args, **kwargs):
         async with in_transaction():
             return await func(*args, **kwargs)
