@@ -7,7 +7,7 @@ def start_registered():
     return """Hi!
 I'm Birhy 🎉!
 I help everyone remember their friends' birthdays.
-You can also see the list of available commands with /help.
+You can also see the list of all available commands with /help.
 """
 
 
@@ -24,13 +24,13 @@ You can also see the list of available commands with /help.
 @lru_cache
 def help_message():
     return """Here is a little help for using me in your chats:
-• /start - sends a greeting message from me
+• /start - sends a greeting message
 • /help - shows this message
 • /group - saves your chat room
-• /me {date} - saves your birthday (please, type your birthday date in `dd.mm.yyyy` format)
+• /me {date} - saves your birthday (please, type your birthday date in a `dd.mm.yyyy` format)
 • /change {date} - allows you to change your birthday date 
-• /set_timezone {timezone} - specify your timezone
-• /get_timezones - view available timezones and their names
+• /set_timezone {timezone} - allows you to choose your timezone
+• /get_timezones - shows available timezones and their names
 • /nearest - shows top 10 nearest birthdays
 • /set_remind_interval $N - sets a reminder about a birthday N days prior (default: 7)
 """
@@ -38,47 +38,51 @@ def help_message():
 
 @lru_cache
 def group_already_registered():
-    return "group_already_registered"
+    return "This group is already registered!"
 
 
 @lru_cache
 def group_successfully_registered():
-    return "group_successfully_registered"
+    return "This group was succesfelly registered."
 
 
 @lru_cache
 def user_already_registered():
-    return "user_already_registered"
+    return "This user was already registered!"
 
 
 @lru_cache
 def group_unregistered():
-    return "group_unregistered"
+    return """This group isn't registered yet!
+Use the /group command in order to fix that."""
 
 
 @lru_cache
 def all_timezones():
-    return "https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
+    return """The list of available timezones: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+Timezone should be written like in the \"TZ database name" column."""
 
 
 @lru_cache
 def wrong_format_date():
-    return "wrong_format_date"
+    return """You have used a wrong date format!
+Please, type your birthday date in `dd.mm.yyyy` format"""
 
 
 @lru_cache
 def user_successfully_registered():
-    return "user_successfully_registered"
+    return "The user was succesfully registered!"
 
 
 @lru_cache
 def wrong_format_timezone():
-    return "wrong_format_timezone"
+    return """You have used a wrong timezone format!
+Use the /get_timezones command to see the available ones."""
 
 
 @lru_cache
 def successfully_changed_timezone():
-    return "successfully_changed_timezone"
+    return "The timezone was successfully changed."
 
 
 def top_nearest_users(users: List[Tuple[str, int]]):
@@ -92,22 +96,23 @@ def top_nearest_users(users: List[Tuple[str, int]]):
 
 @lru_cache
 def wrong_format_interval():
-    return "wrong_format_interval"
+    return """You have entered a wrong reminder interval! 
+The interval should be a non-negative integer."""
 
 
 @lru_cache
 def successfully_changed_interval():
-    return "successfully_changed_interval"
+    return "The reminder interval was changed successfully."
 
 
 @lru_cache
 def wrong_format_username():
-    return "wrong_format_username"
+    return "You have entered a wrong username!"
 
 
 @lru_cache
 def not_existing_user():
-    return "not_existing_user"
+    return "This user does not exist."
 
 
 def get_users_birthday(person):
@@ -116,12 +121,13 @@ def get_users_birthday(person):
 
 @lru_cache
 def user_unregistered():
-    return "user_unregistered"
+    return """This user is not registered.
+Use the /me {date} command in order to fix this."""
 
 
 @lru_cache
 def user_successfully_updated():
-    return "user_successfully_updated"
+    return "The user's birthday was successfelly updated."
 
 
 def happy_birthday(person):
