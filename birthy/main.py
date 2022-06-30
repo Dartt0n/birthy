@@ -15,7 +15,7 @@ async def init():
         db_url=config.DATABASE_URL, modules={"models": ["database.models"]}
     )
     # Generate the schema
-    await Tortoise.generate_schemas()
+    await Tortoise.generate_schemas(safe=True)
 
 
 async def monitor():
