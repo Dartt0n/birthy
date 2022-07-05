@@ -31,8 +31,8 @@ def help_message():
 • /change {date} - allows you to change your birthday date 
 • /set_timezone {timezone} - allows you to choose your timezone
 • /get_timezones - shows available timezones and their names
-• /nearest - shows top 10 nearest birthdays
-• /set_remind_interval $N - sets a reminder about a birthday N days prior (default: 7)
+• /nearest [count] - shows top `count` nearest birthdays (optional, default: 10)
+• /set_remind_interval {N} - sets a reminder about a birthday `N` days prior (default: 7)
 """
 
 

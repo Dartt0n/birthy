@@ -87,11 +87,12 @@ async def set_timezone_for_group(message: types.Message):
 async def get_nearest_users(message: types.Message):
     """This handlers sends a list of persons sorted by closest birthday to current date"""
     group = await Group.filter(telegram_id=message.chat.id).get()
+    count = parser.extract_integer(message.text) or 10
     await group.fetch_related("persons")
     users = []
     for person in group.persons:
         users.append((person.name, await person.days_before_birthday()))
-    users = sorted(users, key=lambda x: x[1])[:10]
+    users = sorted(users, key=lambda x: x[1])[:count]
     await message.reply(scripts.top_nearest_users(users))
 
 
