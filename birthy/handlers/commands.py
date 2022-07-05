@@ -100,7 +100,7 @@ async def get_nearest_users(message: types.Message):
 @validators.registered_group_required
 async def set_remind_interval(message: types.Message):
     """This handler updates remind interval in database"""
-    interval = parser.extract_interval(message.text)
+    interval = parser.extract_integer(message.text)
     if interval is None:
         await message.reply(scripts.wrong_format_interval())
         return
