@@ -4,7 +4,7 @@ import pytz
 
 birth_date_re = re.compile(r"(?:0[1-9]|[12]\d|3[01])\.(?:0[1-9]|1[012])\.(?:19|20)\d\d")
 timezone_re = re.compile(r"\w+\/\w+")  # TODO: Add one word timezones like `UTC`
-interval_re = re.compile(r" \d+")
+integer_re = re.compile(r" \d+")
 
 
 def extract_birth_date(text: str) -> date | None:
@@ -33,8 +33,8 @@ def extract_timezone(text: str) -> str | None:
         return timezone.zone
 
 
-def extract_interval(text: str) -> int | None:
-    match = interval_re.search(text)
+def extract_integer(text: str) -> int | None:
+    match = integer_re.search(text)
     if match is None:
         return None
 

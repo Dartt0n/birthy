@@ -87,11 +87,12 @@ async def set_timezone_for_group(message: types.Message):
 async def get_nearest_users(message: types.Message):
     """This handlers sends a list of persons sorted by closest birthday to current date"""
     group = await Group.filter(telegram_id=message.chat.id).get()
+    count = parser.extract_integer(message.text) or 10
     await group.fetch_related("persons")
     users = []
     for person in group.persons:
         users.append((person.name, await person.days_before_birthday()))
-    users = sorted(users, key=lambda x: x[1])[:10]
+    users = sorted(users, key=lambda x: x[1])[:count]
     await message.reply(scripts.top_nearest_users(users))
 
 
@@ -100,7 +101,7 @@ async def get_nearest_users(message: types.Message):
 @validators.registered_group_required
 async def set_remind_interval(message: types.Message):
     """This handler updates remind interval in database"""
-    interval = parser.extract_interval(message.text)
+    interval = parser.extract_integer(message.text)
     if interval is None:
         await message.reply(scripts.wrong_format_interval())
         return
