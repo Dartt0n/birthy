@@ -28,6 +28,7 @@ def help_message():
 • /help - shows this message
 • /group - saves your chat room
 • /me {date} - saves your birthday (please, type your birthday date in a `dd.mm.yyyy` format)
+• /get {user} - shows the `user`'s birthday (please, write user as telegram username)
 • /change {date} - allows you to change your birthday date 
 • /set_timezone {timezone} - allows you to choose your timezone
 • /get_timezones - shows available timezones and their names
