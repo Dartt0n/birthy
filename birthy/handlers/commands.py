@@ -165,3 +165,14 @@ async def get_all_birthdays_in_month(message: types.Message):
     data = [(person.name, person.birth_date) for person in persons]
     data.sort(key=lambda x: x[1])
     await message.reply(scripts.birthdays_list(data))
+
+
+@dp.message_handler(commands=["all"])
+@validators.transaction
+@validators.registered_group_required
+async def get_all_birthdays(message: types.Message):
+    """This handler sends info about every one's birthday in a chat"""
+    persons = await Person.filter(group__telegram_id=message.chat.id).all()
+    data = [(person.name, person.birth_date) for person in persons]
+    data.sort(key=lambda x: x[1])
+    await message.reply(scripts.birthdays_list(data))

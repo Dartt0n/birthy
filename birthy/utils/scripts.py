@@ -27,13 +27,15 @@ def help_message():
 • /start - sends a greeting message
 • /help - shows this message
 • /group - saves your chat room
-• /me {date} - saves your birthday (please, type your birthday date in a `dd.mm.yyyy` format)
+• /me {date} - saves your birthday (type your birthday date in a `dd.mm.yyyy` format)
+• /get {user} - shows the `user`'s birthday (write user's telegram alias)
 • /change {date} - allows you to change your birthday date 
 • /set_timezone {timezone} - allows you to choose your timezone
 • /get_timezones - shows available timezones and their names
 • /nearest [count] - shows top `count` nearest birthdays (optional, default: 10)
 • /set_remind_interval {N} - sets a reminder about a birthday `N` days prior (default: 7)
 • /month {month} - shows all birthdays in specified month (optional, default: current)
+• /all - shows all known birthdays
 """
 
 
