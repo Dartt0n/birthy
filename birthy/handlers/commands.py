@@ -1,4 +1,5 @@
 from aiogram import types
+from datetime import date
 from bot.bot import dp
 from database.models import Group, Person
 from utils import scripts, validators, parser
@@ -153,6 +154,19 @@ async def change_user(message: types.Message):
     await validators.check_birthday(message)
 
 
+@dp.message_handler(commands=["month"])
+@validators.transaction
+@validators.registered_group_required
+async def get_all_birthdays_in_month(message: types.Message):
+    """This handler sends all birthdays in a specified or current month"""
+    month = parser.extract_integer(message.text) or date.today().month
+    persons = await Person.filter(group__telegram_id=message.chat.id).all()
+    persons = filter(lambda person: person.birth_date.month == month, persons)
+    data = [(person.name, person.birth_date) for person in persons]
+    data.sort(key=lambda x: x[1])
+    await message.reply(scripts.birthdays_list(data))
+
+
 @dp.message_handler(commands=["all"])
 @validators.transaction
 @validators.registered_group_required
@@ -161,4 +175,4 @@ async def get_all_birthdays(message: types.Message):
     persons = await Person.filter(group__telegram_id=message.chat.id).all()
     data = [(person.name, person.birth_date) for person in persons]
     data.sort(key=lambda x: x[1])
-    await message.reply(scripts.all_birthdays(data))
+    await message.reply(scripts.birthdays_list(data))

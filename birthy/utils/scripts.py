@@ -34,6 +34,7 @@ def help_message():
 • /get_timezones - shows available timezones and their names
 • /nearest [count] - shows top `count` nearest birthdays (optional, default: 10)
 • /set_remind_interval {N} - sets a reminder about a birthday `N` days prior (default: 7)
+• /month {month} - shows all birthdays in specified month (optional, default: current)
 • /all - shows all known birthdays
 """
 
@@ -140,7 +141,9 @@ def birthday_in_days(person, days):
     return f"{person.name}'s birthday is in {days} days"
 
 
-def all_birthdays(data):
+def birthdays_list(data, default="Hmm, seems like there are no birthdays that match your request"):
+    if not data:
+        return default
     return "\n".join(
         [
             f"{index+1}. {name} - {birthday.strftime('%-d %B, %Y')}"
