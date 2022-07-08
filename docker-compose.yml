@@ -3,64 +3,29 @@ services:
   bot:
     build: .
     container_name: birthy_bot
-    restart: "always"
+    restart: "unless-stopped"
     environment:
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
     depends_on:
       - database
-    networks:
-      database_network:
-        aliases:
-          - bot
-        ipv4_address: "156.0.0.10"
+
   database:
-    user: root
     image: postgres:14.1-alpine
     container_name: birthy_database
-    restart: unless-stopped
+    restart: "unless-stopped"
     environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      PGDATA: /data/postgres
     ports:
       - "5432:5432"
     volumes:
-      - ./volume/database/:/var/lib/postgresql/data
-    networks:
-      database_network:
-        aliases:
-          - database
-        ipv4_address: "156.0.0.11"
-  pgadmin:
-    user: root
-    image: dpage/pgadmin4
-    container_name: birthy_pgadmin
-    restart: unless-stopped
-    ports:
-      - "${PGADMIN_PORT}:80"
-    depends_on:
-      - database
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - ./volume/pgadmin/:/var/lib/pgadmin
-    networks:
-      database_network:
-        aliases:
-          - pgadmin
-        ipv4_address: "156.0.0.12"
+      - volume:/data/postgres
 
 volumes:
-  database:
-  pgadmin:
-networks:
-  database_network:
-    ipam:
-      config:
-        - subnet: 156.0.0.0/24
+  volume:
