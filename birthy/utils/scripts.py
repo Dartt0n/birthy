@@ -139,7 +139,9 @@ def birthday_in_days(person, days):
     return f"{person.name}'s birthday is in {days} days"
 
 
-def all_birthdays(data):
+def birthdays_list(data, default="Hmm, seems no birthdays matched your request"):
+    if not data:
+        return default
     return "\n".join(
         [
             f"{index+1}. {name} - {birthday.strftime('%-d %B, %Y')}"

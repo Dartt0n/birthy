@@ -164,4 +164,4 @@ async def get_all_birthdays_in_month(message: types.Message):
     persons = filter(lambda person: person.birth_date.month == month, persons)
     data = [(person.name, person.birth_date) for person in persons]
     data.sort(key=lambda x: x[1])
-    await message.reply(scripts.all_birthdays(data))
+    await message.reply(scripts.birthdays_list(data))
