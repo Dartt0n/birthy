@@ -151,3 +151,14 @@ async def change_user(message: types.Message):
     )
     await message.reply(scripts.user_successfully_updated())
     await validators.check_birthday(message)
+
+
+@dp.message_handler(commands=["all"])
+@validators.transaction
+@validators.registered_group_required
+async def get_all_birthdays(message: types.Message):
+    """This handler sends info about every one's birthday in a chat"""
+    persons = await Person.filter(group__telegram_id=message.chat.id).all()
+    data = [(person.name, person.birth_date) for person in persons]
+    data.sort(key=lambda x: x[1])
+    await message.reply(scripts.all_birthdays(data))
