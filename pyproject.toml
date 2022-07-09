@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "birthy"
-version = "0.1.0"
-description = ""
-authors = ["Anton Kudryavtsev <antonkudryavtsevdoem@gmail.com>"]
+version = "1.1.0"
+description = "Birthy is a telegram bot, which helps everyone remember their friends' birthdays"
+authors = [
+	"Anton Kudryavtsev <antonkudryavtsevdoem@gmail.com>",
+	"Sofia Tkachenko <duck.shelter@gmail.com>",
+        "Azamat Bayramov <bayramov.azamat04@gmail.com>"
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
