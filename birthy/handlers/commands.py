@@ -118,9 +118,13 @@ async def set_remind_interval(message: types.Message):
 async def get_users_birthday(message: types.Message):
     """This handler sends info about user's birthday"""
     username = parser.extract_username(message.text)
+
     if not username:
-        await message.reply(scripts.wrong_format_username())
-        return
+        if message.reply_to_message:
+            username = message.reply_to_message.from_user.username
+        else:
+            await message.reply(scripts.wrong_format_username())
+            return
 
     person = (
         await Person.filter(name=username)
