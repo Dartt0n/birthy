@@ -50,4 +50,9 @@ def extract_username(text: str) -> str | None:
     words = text.split()
     if len(words) != 2:
         return None
-    return words[1]
+
+    username = words[1]
+    if username[0] == '@':
+        username = username[1:]
+
+    return username
